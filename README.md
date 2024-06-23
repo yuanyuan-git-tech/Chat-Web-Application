@@ -3,9 +3,6 @@
 ### Screen Capture
 [Demo Video Link](https://www.loom.com/share/b3d9b042ea4c49c39cb618ec5fb50824?sid=ea75bb90-d2e0-4dce-adb4-45a493d4a4fb)
 
-<img src="./screenshot/docker.png">
-<img src="./screenshot/backenddocker.png">
-
 ### Overview
 This project is a full-stack web application with a Golang backend, a React TypeScript frontend, PostgreSQL for data storage, and Redis for upvote/downvote functionality.
 #### Frontend Framework: React Typescript
@@ -107,36 +104,4 @@ npm start
 Test frontend docker image:
 ```bash
 docker-compose up -d frontend
-```
-
-### Minikube
-Start minikube
-```shell start
-minikube
-```
-Build and Push Docker Images to Minikube:
-```shell
-eval $(minikube -p minikube docker-env)
-docker build -t backend-image:latest -f golang/Dockerfile.backend golang/
-docker build -t frontend-image:latest -f react-typescript/Dockerfile.frontend react-typescript/
-```
-Deploy PostgreSQL and Redis:
-```shell
-kubectl apply -f k8s/deployment-postgres.yaml
-kubectl apply -f k8s/service-postgres.yaml
-
-kubectl apply -f k8s/deployment-redis.yaml.yaml
-kubectl apply -f k8s/service-redis.yaml
-```
-Deploy Backend and Frontend:
-```shell
-kubectl apply -f k8s/deployment-backend.yaml
-kubectl apply -f k8s/service-backend.yaml
-
-kubectl apply -f k8s/deployment-frontend.yaml
-kubectl apply -f k8s/service-frontend.yaml
-```
-Accessing the Application:
-```shell
-minikube service frontend-service
 ```
