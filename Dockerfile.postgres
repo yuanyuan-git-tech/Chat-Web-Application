@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+ENV POSTGRES_DB=nimble_chat
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=mysecretpassword
+
+EXPOSE 5432

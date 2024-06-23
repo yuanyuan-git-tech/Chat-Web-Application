@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    container_name: postgres
+    environment:
+      POSTGRES_DB: nimble_chat
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres-init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./golang
+      dockerfile: Dockerfile.backend
+    container_name: go_server
+    environment:
+      HOST: postgres
+      PORT: 5432
+      DB_USER: postgres
+      PASSWORD: mysecretpassword
+      DBNAME: nimble_chat
+      REDIS_ADDR: redis:6379
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    build:
+      context: ./react-typescript
+      dockerfile: Dockerfile.frontend
+    container_name: react_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
